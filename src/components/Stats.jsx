@@ -4,11 +4,8 @@ import ApplianceButton from "./ApplianceButton"
 
 function Stats(){
   return(
-	<section className="top-[90%] absolute z-5 gap-0">
-	  <div className="rounded-t-3xl h-12 flex items-center justify-center bg-white">
-		<div className="w-[80%] rounded-2xl bg-gray-300 h-2"></div>
-	  </div>
-	  <section className="px-4 py-20 font-body flex items-center flex-col justify-center gap-8 h-full">
+	<section className="absolute top-full z-0">
+	  <section className="px-4 py-20 font-body flex items-center flex-col justify-center gap-8 h-full w-screen">
 	    <div className="flex flex-row">
 		  <div className="flex items-center flex-col">
 		    <h2 className="text-7xl font-extrabold text-[#FFA337]">4387</h2>
