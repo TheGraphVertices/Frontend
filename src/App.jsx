@@ -5,7 +5,7 @@ import Landing from './components/Landing';
 
 function App() {
   return (
-    <div className='font-body relative'>
+    <div className='font-body static'>
       <RoomTab />
       <Landing />
       <Stats />
