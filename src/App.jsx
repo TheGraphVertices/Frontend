@@ -1,15 +1,23 @@
 import './App.css';
-import RoomTab from './components/RoomTab';
-import Stats from './components/Stats'
-import Landing from './components/Landing';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Layout from './pages/Layout.jsx';
+import UserHomePage from './pages/UserHomePage.jsx'
+import Login from './pages/Login';
+import CreateAccount from './pages/CreateAccount';
+import ForgotPassword from './pages/ForgotPassword';
 
 function App() {
   return (
-    <div className='font-body absolute h-full'>
-      <RoomTab />
-      <Landing />
-      <Stats />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Login />} />
+          <Route path="userhomepage" element={<UserHomePage />} />
+          <Route path="register" element={<CreateAccount />} />
+          <Route path='forgotpassword' element={<ForgotPassword />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
