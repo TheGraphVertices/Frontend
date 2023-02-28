@@ -8,6 +8,10 @@ module.exports = {
       fontFamily: {
         "body": ["DM Sans"],
       },
+
+      backgroundImage: {
+        "livingroom": 'url("/src/assetts/livingroom.jpg")',
+      },
     },
   },
   plugins: [],
