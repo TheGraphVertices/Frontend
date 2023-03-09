@@ -3,7 +3,7 @@ import Temperature from "./Temperature"
 import ApplianceButton from "./ApplianceButton"
 import { useEffect, useState } from "react"
 
-function Stats(){
+function Stats({ id }){
 	const [response, setResponse] = useState({})
 
 	const getResponse = async () => {
@@ -21,7 +21,6 @@ function Stats(){
 	}
 
 	useEffect(() => {
-		getResponse()
 	}, [getResponse])
 
 	return(
@@ -48,6 +47,7 @@ function Stats(){
 				<ApplianceButton name="Heater" putFunction={putAppliance("Heater")} on={response["Heater_on"]}/>
 				<ApplianceButton name="Light" putFunction={putAppliance("Light")} on={response["Light_on"]}/>
 			</div>
+			<button onClick={() => {console.log(id)}}>Test</button>
 		</section>
 	</section>
 	)

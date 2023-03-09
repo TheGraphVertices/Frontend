@@ -5,12 +5,17 @@ function CreateAccount(){
   const [password, setPassword] = useState()
 
   const postAccount = async () => {
+    const obj = {
+      fname: username,
+      lname: password,
+      address: 'yes'
+    }
     const response = await fetch('https://jeremypetch.com/create_user', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ fname: username, lname:password, address: 'yes' })
+      body: JSON.stringify(obj)
     }).then((data) => data.json()).then((data) => { console.log(data) })
     return response
   }
