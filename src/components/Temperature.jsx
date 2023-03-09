@@ -1,5 +1,5 @@
-function Temperature(){
-  const portion = Math.round((10 / 30) * 100)
+function Temperature({ temperature }){
+  const portion = Math.round((temperature / 30) * 100)
 
   const portionStyle = {
     clipPath: `polygon(0% 0%, 0% 50%, 50% 50%, ${portion}% 0%)`,
