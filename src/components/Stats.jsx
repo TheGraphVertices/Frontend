@@ -2,22 +2,37 @@ import RoomButton from "./RoomButton"
 import Temperature from "./Temperature"
 import ApplianceButton from "./ApplianceButton"
 import { useEffect, useState } from "react"
+import { LineChart, XAxis, YAxis, Tooltip, Line, CartesianGrid, Legend } from "recharts"
 
 function Stats({ id }){
 	const [response, setResponse] = useState({
 		ppms: [0],
-		temps: [0]
+		temps: [0],
+		datetimes: [""]
 	})
+	const [graphData, setGraphData] = useState([])
+
 
 	useEffect(() => {
+		const graphDataPrep = () => {
+			const dataArr = []
+			if(response["datetimes"].length !== 1){
+				for(let i = 0; i <= response["ppms"].length - 1; i++){
+					const obj = {datetimes: response["datetimes"][i], temps: response["temps"][i]}
+					dataArr.push(obj)
+				}
+			}
+			setGraphData(dataArr)
+		}
+
 		const getResponse = async () => {
 			const url = `https://api.jeremypetch.com/data/${id}/list`
 			await fetch(url).then((response) => response.json()).then((data) => {
 				if(data != {}){
 					setResponse(data)
+					graphDataPrep()
 				}
 			})
-			console.log(response)
 		}
 
 		getResponse()
@@ -58,6 +73,15 @@ function Stats({ id }){
 			<div className="w-full grid grid-cols-2 gap-4">
 				<ApplianceButton name="Heater" putFunction={putAppliance("Heater")} on={response["Heater_on"]}/>
 				<ApplianceButton name="Light" putFunction={putAppliance("Light")} on={response["Light_on"]}/>
+			</div>
+			<div className="w-full h-64">
+				<LineChart width={300} height={200} data={graphData}>
+					<CartesianGrid />
+					<XAxis />
+					<YAxis dataKey="temps" />
+					<Tooltip />
+					<Line dataKey="temps" type="monotone" stroke="#FF00FF"/>
+				</LineChart>
 			</div>
 		</section>
 	</section>
