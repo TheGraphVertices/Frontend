@@ -10,7 +10,7 @@ function UserHomePage(){
     <div className='font-body absolute h-full'>
       <RoomTab />
       <Landing />
-      <Stats id={location.state.id} />
+      <Stats id={location.state.uid} />
     </div>
   )
 }

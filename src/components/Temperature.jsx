@@ -9,7 +9,7 @@ function Temperature({ temperature }){
     <div className="relative w-[65%] max-w-[300px] aspect-square">
       <div className="bg-white w-full h-full rounded-full flex justify-center items-center flex-column text-center shadow-[0px_10px_50px_-12px_rgb(0,0,0,0.3)] absolute z-20">
         <div>
-          <h1 className="text-7xl font-extrabold">12°C</h1>
+          <h1 className="text-7xl font-extrabold">{temperature}°C</h1>
           <h2 className="text-2xl font-extrabold">Temperature</h2>
         </div>
       </div>	

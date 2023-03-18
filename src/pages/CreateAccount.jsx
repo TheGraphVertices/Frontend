@@ -29,8 +29,9 @@ function CreateAccount(){
       setDuplicate(true)
     }
     else{
+      const id = await response.text()
       navigate("/userhomepage", { state: {
-        uid: response.text()
+        uid: `${id}`
       }})
     }
 }
