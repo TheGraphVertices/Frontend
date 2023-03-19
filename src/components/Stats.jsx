@@ -35,12 +35,15 @@ function Stats({ id }){
 
 		const getResponse = async () => {
 			const url = `https://api.jeremypetch.com/data/${id}/list`
-			await fetch(url).then((response) => response.json()).then((data) => {
-				if(data !== {}){
-					setResponse(data)
-					graphDataPrep()
-				}
-			})
+			const response = await fetch(url)
+			if(response.status === 400){
+				return
+			}
+			else{
+				const body = await response.json()
+				setResponse(body)
+				graphDataPrep()
+			}
 		}
 
 		getEnergyData()
