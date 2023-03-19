@@ -7,7 +7,7 @@ function UserHomePage(){
   const location = useLocation()
 
   return(
-    <div className='font-body absolute h-full'>
+    <div className='font-body absolute h-full w-screen'>
       <RoomTab />
       <Landing />
       <Stats id={location.state.uid} />
