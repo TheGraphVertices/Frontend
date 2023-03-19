@@ -2,7 +2,7 @@ import RoomButton from "./RoomButton"
 import Temperature from "./Temperature"
 import ApplianceButton from "./ApplianceButton"
 import { useEffect, useState } from "react"
-import { LineChart, XAxis, YAxis, Tooltip, Line, CartesianGrid, Legend } from "recharts"
+import { LineChart, XAxis, YAxis, Tooltip, Line, CartesianGrid, ResponsiveContainer } from "recharts"
 
 function Stats({ id }){
 	const [response, setResponse] = useState({
@@ -12,6 +12,14 @@ function Stats({ id }){
 	})
 	const [graphData, setGraphData] = useState([])
 
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const getEnergyData = async () => {
+		/*
+		* This should work but the api on is a bit broke
+		const response = await fetch("https://api.bmreports.com/BRMS/FUELINSTHHCUR/v1?APIKey=p2tqjj15j3w82zz&ServiceType=csv")
+		console.log(response)
+		*/
+	}
 
 	useEffect(() => {
 		const graphDataPrep = () => {
@@ -28,24 +36,31 @@ function Stats({ id }){
 		const getResponse = async () => {
 			const url = `https://api.jeremypetch.com/data/${id}/list`
 			await fetch(url).then((response) => response.json()).then((data) => {
-				if(data != {}){
+				if(data !== {}){
 					setResponse(data)
 					graphDataPrep()
 				}
 			})
 		}
 
+		getEnergyData()
 		getResponse()
-	}, [])
+	}, [id, response])
 
 	const putAppliance = async (appliance) => {
 		/*
-		fetch("", {
+		const obj = {
+			uid: id,
+			appliance_type: appliance,
+			on_off: !response["appliance"][response["appliance"].length - 1]
+		}
+
+		fetch("https://api.jeremypetch.com/user/appliance", {
 			headers:{
 				"Content-Type": "application/json"
 			},
 			method: "PUT",
-			body: JSON.stringify({appliance: !response["appliance_on"]})
+			body: JSON.stringify(obj)
 		})
 		*/
 	}
@@ -63,7 +78,7 @@ function Stats({ id }){
 				<h3 className="text-center text-l font-extrabold">Clean Energy being used in home</h3>
 			</div>
 			</div>
-			<Temperature temperature={response["temps"][0]} />
+			<Temperature temperature={response["temps"][response["temps"].length - 1]} />
 			<h2 className="text-4xl font-extrabold self-start">Rooms</h2>
 			<div className="w-full flex gap-4">
 				<RoomButton name="Living Room" clicked={true}/>
@@ -71,17 +86,19 @@ function Stats({ id }){
 			</div>
 			<h2 className="text-4xl font-extrabold self-start">Appliances</h2>
 			<div className="w-full grid grid-cols-2 gap-4">
-				<ApplianceButton name="Heater" putFunction={putAppliance("Heater")} on={response["Heater_on"]}/>
-				<ApplianceButton name="Light" putFunction={putAppliance("Light")} on={response["Light_on"]}/>
+				<ApplianceButton name="Heater" putFunction={putAppliance("Heater")} on={response["boiler"]}/>
+				<ApplianceButton name="Light" putFunction={putAppliance("Light")} on={response["light"]}/>
 			</div>
 			<div className="w-full h-64">
-				<LineChart width={300} height={200} data={graphData}>
-					<CartesianGrid />
-					<XAxis />
-					<YAxis dataKey="temps" />
-					<Tooltip />
-					<Line dataKey="temps" type="monotone" stroke="#FF00FF"/>
-				</LineChart>
+				<ResponsiveContainer width="100%" height="100%">
+					<LineChart data={graphData}>
+						<CartesianGrid />
+						<XAxis />
+						<YAxis dataKey="temps" />
+						<Tooltip />
+						<Line dataKey="temps" type="monotone" stroke="#FF00FF"/>
+					</LineChart>
+				</ResponsiveContainer>
 			</div>
 		</section>
 	</section>
