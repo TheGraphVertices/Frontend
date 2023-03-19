@@ -10,7 +10,8 @@ function Stats({ id }){
 		temps: [0],
 		datetimes: [""]
 	})
-	const [graphData, setGraphData] = useState([])
+	const [tempGraphData, setTempGraphData] = useState([])
+	const [ppmGraphData, setPpmGraphData] = useState([])
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const getEnergyData = async () => {
@@ -23,14 +24,18 @@ function Stats({ id }){
 
 	useEffect(() => {
 		const graphDataPrep = () => {
-			const dataArr = []
+			const tempArr = []
+			const ppmArr = []
 			if(response["datetimes"].length !== 1){
 				for(let i = 0; i <= response["ppms"].length - 1; i++){
-					const obj = {datetimes: response["datetimes"][i], temps: response["temps"][i]}
-					dataArr.push(obj)
+					const tempObj = {datetimes: response["datetimes"][i].split(" ")[0], temperature: response["temps"][i]}
+					tempArr.push(tempObj)
+					const ppmObj = {datetimes: response["datetimes"][i].split(" ")[0], ppms: response["ppms"][i]}
+					ppmArr.push(ppmObj)
 				}
 			}
-			setGraphData(dataArr)
+			setTempGraphData(tempArr)
+			setPpmGraphData(ppmArr)
 		}
 
 		const getResponse = async () => {
@@ -92,14 +97,25 @@ function Stats({ id }){
 					<ApplianceButton name="Heater" putFunction={putAppliance("Heater")} on={response["boiler"]}/>
 					<ApplianceButton name="Light" putFunction={putAppliance("Light")} on={response["light"]}/>
 				</div>
-				<div className="w-full h-64">
+				<div className="w-full h-64 my-2">
+					<h2 className="text-4xl font-extrabold self-start">Temperature</h2>
 					<ResponsiveContainer width="100%" height="100%">
-						<LineChart data={graphData}>
+						<LineChart data={tempGraphData}>
 							<CartesianGrid />
-							<XAxis />
-							<YAxis dataKey="temps" />
-							<Tooltip />
-							<Line dataKey="temps" type="monotone" stroke="#FF00FF"/>
+							<XAxis dataKey="datetimes"/>
+							<YAxis dataKey="temperature" />
+							<Line dataKey="temperature" type="monotone" stroke="#FF00FF"/>
+						</LineChart>
+					</ResponsiveContainer>
+				</div>
+				<div className="w-full h-64 my-2">
+					<h2 className="text-4xl font-extrabold self-start ">Carbon ppm</h2>
+					<ResponsiveContainer width="100%" height="100%">
+						<LineChart data={ppmGraphData}>
+							<CartesianGrid />
+							<XAxis dataKey="datetimes"/>
+							<YAxis dataKey="ppms" />
+							<Line dataKey="ppms" type="monotone" stroke="#FF00FF"/>
 						</LineChart>
 					</ResponsiveContainer>
 				</div>
